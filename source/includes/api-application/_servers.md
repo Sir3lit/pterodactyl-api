@@ -500,42 +500,87 @@ curl "https://pterodactyl.app/api/application/servers" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST \
   -d '{
-	"name": "Test",
-	"user": 1,
-	"nest": 5,
-	"egg": 15,
-	"docker_image": "quay.io/pterodactyl/core:java-glibc",
-	"startup": "java -Xms128M -Xmx 1024M -jar server.jar",
-	"limits": {
-		"memory": 512,
-		"swap": 0,
-		"disk": 1024,
-		"io": 500,
-		"cpu": 100
-	},
-	"feature_limits": {
-		"databases": 1,
-		"allocations": 2
-	},
-	"environment": {
-		"DL_VERSION": "1.12.2"
-	},
-	"deploy": {
-		"locations": [1],
-		"dedicated_ip": false,
-		"port_range": []
-	},
-	"start_on_completion": true
-	
-}'
+  	"name": "Test",
+  	"user": 1,
+  	"nest": 5,
+  	"egg": 15,
+  	"docker_image": "quay.io/pterodactyl/core:java-glibc",
+  	"startup": "java -Xms128M -Xmx 1024M -jar server.jar",
+  	"limits": {
+  		"memory": 512,
+  		"swap": 0,
+  		"disk": 1024,
+  		"io": 500,
+  		"cpu": 100
+  	},
+  	"feature_limits": {
+  		"databases": 1,
+  		"allocations": 2
+  	},
+  	"environment": {
+  		"DL_VERSION": "1.12.2"
+  	},
+  	"deploy": {
+  		"locations": [1],
+  		"dedicated_ip": false,
+  		"port_range": []
+  	},
+  	"start_on_completion": true
+  }'
 ```
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "server",
+  "attributes": {
+    "id": 53,
+    "external_id": null,
+    "uuid": "d7bcc254-e218-4522-a7fe-9d2d562ad790",
+    "identifier": "d7bcc254",
+    "name": "Test",
+    "description": "",
+    "suspended": false,
+    "limits": {
+      "memory": 512,
+      "swap": 0,
+      "disk": 1024,
+      "io": 500,
+      "cpu": 100
+    },
+    "feature_limits": {
+      "databases": 1,
+      "allocations": 2
+    },
+    "user": 1,
+    "node": 1,
+    "allocation": 28,
+    "nest": 5,
+    "egg": 15,
+    "pack": null,
+    "container": {
+      "startup_command": "java -Xms128M -Xmx 1024M -jar server.jar",
+      "image": "quay.io\/pterodactyl\/core:java-glibc",
+      "installed": false,
+      "environment": {
+        "DL_VERSION": "1.12.2",
+        "STARTUP": "java -Xms128M -Xmx 1024M -jar server.jar",
+        "P_SERVER_LOCATION": "fr.sys",
+        "P_SERVER_UUID": "d7bcc254-e218-4522-a7fe-9d2d562ad790"
+      }
+    },
+    "updated_at": "2019-02-23T11:25:35+00:00",
+    "created_at": "2019-02-23T11:25:35+00:00"
+  }
+}
 ```
 
-This endpoint does this and that.
+This endpoint will create a server based on the given json object. 
+
+<aside class="notice">
+Please note that every environment variable from the egg must be set.
+</aside>
+
 
 ### HTTP Request
 

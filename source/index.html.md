@@ -52,6 +52,7 @@ A special thanks to everyone who has helped contribute!
 **Other Pterodactyl API wrappers:**
 
 - [Ptero4J](https://github.com/stanjg/Ptero4J) (Java)
+- [crocgodyl](https://github.com/parkervcp/crocgodyl) (Golang)
 
 # Authentication
 
