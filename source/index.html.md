@@ -52,7 +52,11 @@ A special thanks to everyone who has helped contribute!
 **Other Pterodactyl API wrappers:**
 
 - [Ptero4J](https://github.com/stanjg/Ptero4J) (Java)
+- [Pterodactyl4J](https://github.com/mattmalec/Pterodactyl4J) (Java)
 - [crocgodyl](https://github.com/parkervcp/crocgodyl) (Golang)
+- [Nodeactyl](https://github.com/Burchard36/Nodeactyl) (Node.js)
+
+If you are the developer of any of these wrappers, feel free to [email us](mailto:support@deploys.io) and we can give you access to document your wrapper as a new language tab.
 
 # Authentication
 
