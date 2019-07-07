@@ -3,7 +3,11 @@ title: Pterodactyl API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
+#  - php
 #  - go
+#  - java
+#  - javascript
+
 
 toc_footers:
   - <a href='https://pterodactyl.io'>Website</a>
@@ -55,6 +59,7 @@ A special thanks to everyone who has helped contribute!
 - [Pterodactyl4J](https://github.com/mattmalec/Pterodactyl4J) (Java)
 - [crocgodyl](https://github.com/parkervcp/crocgodyl) (Golang)
 - [Nodeactyl](https://github.com/Burchard36/Nodeactyl) (Node.js)
+- [pterodactyl-sdk](https://github.com/hcgcloud/pterodactyl-sdk) (PHP)
 
 If you are the developer of any of these wrappers, feel free to [email us](mailto:support@deploys.io) and we can give you access to document your wrapper as a new language tab.
 
@@ -69,6 +74,20 @@ curl "api_endpoint_here"
   -H "Content-Type: application/json" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
 ```
+
+<!---
+```php
+# Wrapper language conflict // WrapperA (title is wrapper's name, for example: Ptero4J)
+<?php 
+echo "owo";
+```
+
+```php
+# Wrapper language conflict // WrapperB (title is the wrapper's name, for example: Pterodactyl4J)
+<?php 
+echo "mmm";
+```
+--->
 
 > Make sure to replace `meowmeowmeow` with your API key.
 
