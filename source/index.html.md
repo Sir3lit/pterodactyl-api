@@ -61,6 +61,7 @@ A special thanks to everyone who has helped contribute!
 - [Nodeactyl](https://github.com/Burchard36/Nodeactyl) (Node.js)
 - [pterodactyl-sdk](https://github.com/hcgcloud/pterodactyl-sdk) (PHP)
 - [Sharpdactyl](https://github.com/KadePcGames/Sharpdactyl) (C#)
+- [Pydactyl](https://github.com/iamkubi/pydactyl) (Python)
 
 If you are the developer of any of these wrappers, feel free to [email us](mailto:support@deploys.io) and we can give you access to document your wrapper as a new language tab.
 
