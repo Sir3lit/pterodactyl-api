@@ -104,7 +104,7 @@ curl "https://pterodactyl.app/api/application/users" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all users along with information about them.
 
 ### HTTP Request
 
@@ -152,7 +152,7 @@ curl "https://pterodactyl.app/api/application/users/<user-id>" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified user.
 
 ### HTTP Request
 
@@ -200,7 +200,7 @@ curl "https://pterodactyl.app/api/application/users/external/<external-id>" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified user with the external id.
 
 ### HTTP Request
 
@@ -227,11 +227,14 @@ curl "https://pterodactyl.app/api/application/users" \
   -X POST \
   -d '
   {
+      "external_id": "example_ext_id",
       "username": "example",
       "email": "example@example.com",
       "first_name": "John",
       "last_name": "Doe",
-      "password": "cat"
+      "password": "cat",
+      "root_admin": false,
+      "language": "en"
   }'
 ```
 > The above command returns JSON structured like this:
@@ -241,7 +244,7 @@ curl "https://pterodactyl.app/api/application/users" \
   "object": "user",
   "attributes": {
     "id": 7,
-    "external_id": null,
+    "external_id": "example_ext_id",
     "uuid": "68b23b39-f172-4cd3-ba4a-ef5761c01374",
     "username": "example",
     "email": "example@example.com",
@@ -254,25 +257,27 @@ curl "https://pterodactyl.app/api/application/users" \
     "updated_at": "2018-11-20T03:05:23+00:00"
   },
   "meta": {
-    "resource": "https:\/\/pterodactyl.development.deluxenode.com\/api\/application\/users\/7"
+    "resource": "https://pterodactyl.app/api/application/users/7"
   }
 }
 ```
 
-This endpoint does this and that.
-
-Parameter | Information
-- | -
-username | The username for the accoount
-email | The email address for the account
-first_name | The user's first name
-last_name | The user's last name
-password | A plain text input of the desired password
+This endpoint creates a new user with the provided information.
 
 ### HTTP Request
 
 `POST  https://pterodactyl.app/api/application/users` 
 
+Parameter | Information | Rules
+- | - | -
+external_id | The external id for the account | <code>sometimes&#124;nullable&#124;string&#124;max:255&#124;unique:users,external_id</code>
+username | The username for the account | <code>required&#124;between:1,255&#124;unique:users,username</code>
+email | The email address for the account | <code>required&#124;email&#124;unique:users,email</code>
+first_name | The user's first name | <code>required&#124;string&#124;between:1,255</code>
+last_name | The user's last name | <code>required&#124;string&#124;between:1,255</code>
+password | A plain text input of the desired password | <code>sometimes&#124;nullable&#124;string</code>
+root_admin | Whether the account is an admin | <code>sometimes&#124;boolean</code>
+language | The language for the account | <code>sometimes&#124;string</code> (+ in available languages)
 
 
 
@@ -294,10 +299,14 @@ curl "https://pterodactyl.app/api/application/users/<user-id>" \
   -X PATCH \
   -d '
   {
+      "external_id": "codeco",
       "username": "codeco",
       "email": "codeco@file.properties",
       "first_name": "Updated",
-      "last_name": "User"
+      "last_name": "User",
+      "password": "betterPassword",
+      "root_admin": true,
+      "language": "en"
   }'
 ```
 > The above command returns JSON structured like this:
@@ -307,7 +316,7 @@ curl "https://pterodactyl.app/api/application/users/<user-id>" \
   "object": "user",
   "attributes": {
     "id": 1,
-    "external_id": "1",
+    "external_id": "codeco",
     "uuid": "c4022c6c-9bf1-4a23-bff9-519cceb38335",
     "username": "codeco",
     "email": "codeco@file.properties",
@@ -322,19 +331,22 @@ curl "https://pterodactyl.app/api/application/users/<user-id>" \
 }
 ```
 
-This endpoint does this and that.
-
-Parameter | Information
-- | -
-username | The username for the accoount
-email | The email address for the account
-first_name | The user's first name
-last_name | The user's last name
-password | A plain text input of the desired password
+This endpoint edits the specified user with the provided information.
 
 ### HTTP Request
 
 `PATCH  https://pterodactyl.app/api/application/users/<user-id>` 
+
+Parameter | Information | Rules
+- | - | -
+external_id | The external id for the account | <code>sometimes&#124;nullable&#124;string&#124;max:255&#124;unique:users,external_id</code>
+username | The username for the account | <code>required&#124;between:1,255&#124;unique:users,username</code>
+email | The email address for the account | <code>required&#124;email&#124;unique:users,email</code>
+first_name | The user's first name | <code>required&#124;string&#124;between:1,255</code>
+last_name | The user's last name | <code>required&#124;string&#124;between:1,255</code>
+password | A plain text input of the desired password | <code>sometimes&#124;nullable&#124;string</code>
+root_admin | Whether the account is an admin | <code>sometimes&#124;boolean</code>
+language | The language for the account | <code>sometimes&#124;string</code> (+ in available languages)
 
 
 
@@ -356,12 +368,8 @@ curl "https://pterodactyl.app/api/application/users/<user-id>" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE
 ```
-> The above command returns JSON structured like this:
 
-```json
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified user.
 
 ### HTTP Request
 

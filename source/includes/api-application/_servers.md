@@ -51,7 +51,7 @@ curl "https://pterodactyl.app/api/application/servers" \
         "pack": null,
         "container": {
           "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-          "image": "quay.io\/pterodactyl\/core:java",
+          "image": "quay.io/pterodactyl/core:java",
           "installed": true,
           "environment": {
             "SERVER_JARFILE": "server.jar",
@@ -93,11 +93,11 @@ curl "https://pterodactyl.app/api/application/servers" \
         "egg": 15,
         "pack": null,
         "container": {
-          "startup_command": ".\/parkertron",
-          "image": "quay.io\/parkervcp\/pterodactyl-images:parkertron",
+          "startup_command": "./parkertron",
+          "image": "quay.io/parkervcp/pterodactyl-images:parkertron",
           "installed": true,
           "environment": {
-            "STARTUP": ".\/parkertron",
+            "STARTUP": "./parkertron",
             "P_SERVER_LOCATION": "test",
             "P_SERVER_UUID": "6d1567c5-08d4-4ecb-8d5d-0ce1ba6b0b99"
           }
@@ -120,7 +120,7 @@ curl "https://pterodactyl.app/api/application/servers" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all servers along with information about them.
 
 ### HTTP Request
 
@@ -178,7 +178,7 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>" \
     "pack": null,
     "container": {
       "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-      "image": "quay.io\/pterodactyl\/core:java",
+      "image": "quay.io/pterodactyl/core:java",
       "installed": true,
       "environment": {
         "SERVER_JARFILE": "server.jar",
@@ -194,7 +194,7 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified server.
 
 ### HTTP Request
 
@@ -227,11 +227,11 @@ curl "https://pterodactyl.app/api/application/servers/external/<external-id>" \
   "object": "server",
   "attributes": {
     "id": 7,
-    "external_id": "99",
+    "external_id": "cow_eater",
     "uuid": "78165af0-4835-405f-b281-07e961bfd0ad",
     "identifier": "78165af0",
     "name": "Eat Cows",
-    "description": "",
+    "description": "ok....",
     "suspended": false,
     "limits": {
       "memory": 1024,
@@ -252,7 +252,7 @@ curl "https://pterodactyl.app/api/application/servers/external/<external-id>" \
     "pack": null,
     "container": {
       "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-      "image": "quay.io\/pterodactyl\/core:java",
+      "image": "quay.io/pterodactyl/core:java",
       "installed": true,
       "environment": {
         "SERVER_JARFILE": "server.jar",
@@ -268,11 +268,161 @@ curl "https://pterodactyl.app/api/application/servers/external/<external-id>" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified server using the external id.
 
 ### HTTP Request
 
 `GET https://pterodactyl.app/api/application/servers/external/<external-id>` 
+
+
+
+
+
+
+<!--
+######################################
+  ==> POST /api/application/servers
+######################################
+-->
+## Create server
+
+
+```shell
+curl "https://pterodactyl.app/api/application/servers" \
+  -H "Authorization: Bearer meowmeowmeow" \
+  -H "Content-Type: application/json" \
+  -H "Accept: Application/vnd.pterodactyl.v1+json" \
+  -X POST \
+  -d '{
+  	"external_id": "test_server",
+  	"name": "Test",
+  	"user": 1,
+  	"description": "Test server",
+  	"egg": 15,
+  	"pack": 1,
+  	"docker_image": "quay.io/pterodactyl/core:java-glibc",
+  	"startup": "java -Xms128M -Xmx 1024M -jar server.jar",
+  	"limits": {
+  		"memory": 512,
+  		"swap": 0,
+  		"disk": 1024,
+  		"io": 500,
+  		"cpu": 100
+  	},
+  	"feature_limits": {
+  		"databases": 1,
+  		"allocations": 2
+  	},
+  	"environment": {
+  		"DL_VERSION": "1.12.2"
+  	},
+    "allocation": {
+      "default": 28,
+      "additional": [
+        3,
+        19
+      ],
+    },
+  	"deploy": {
+  		"locations": [1],
+  		"dedicated_ip": false,
+  		"port_range": []
+  	},
+  	"start_on_completion": true,
+  	"skip_scripts": false,
+  	"oom_disabled": true
+  }'
+```
+> The above command returns JSON structured like this:
+
+```json
+{
+  "object": "server",
+  "attributes": {
+    "id": 53,
+    "external_id": "test_server",
+    "uuid": "d7bcc254-e218-4522-a7fe-9d2d562ad790",
+    "identifier": "d7bcc254",
+    "name": "Test",
+    "description": "Test server",
+    "suspended": false,
+    "limits": {
+      "memory": 512,
+      "swap": 0,
+      "disk": 1024,
+      "io": 500,
+      "cpu": 100
+    },
+    "feature_limits": {
+      "databases": 1,
+      "allocations": 2
+    },
+    "user": 1,
+    "node": 1,
+    "allocation": 28,
+    "nest": 5,
+    "egg": 15,
+    "pack": 1,
+    "container": {
+      "startup_command": "java -Xms128M -Xmx 1024M -jar server.jar",
+      "image": "quay.io/pterodactyl/core:java-glibc",
+      "installed": false,
+      "environment": {
+        "DL_VERSION": "1.12.2",
+        "STARTUP": "java -Xms128M -Xmx 1024M -jar server.jar",
+        "P_SERVER_LOCATION": "fr.sys",
+        "P_SERVER_UUID": "d7bcc254-e218-4522-a7fe-9d2d562ad790"
+      }
+    },
+    "updated_at": "2019-02-23T11:25:35+00:00",
+    "created_at": "2019-02-23T11:25:35+00:00"
+  }
+}
+```
+
+This endpoint will create a server based on the given json object. 
+
+<aside class="notice">
+Please note that every environment variable from the egg must be set.
+</aside>
+
+### HTTP Request
+
+`POST https://pterodactyl.app/api/application/servers` 
+
+Parameter | Information | Rules
+- | - | -
+external_id | The server's external id | <code>sometimes&#124;nullable&#124;string&#124;between:1,191&#124;unique:servers</code>
+name | The server's name | <code>required&#124;string&#124;min:1&#124;max:255</code>
+user | The user id of the server owner | <code>required&#124;integer&#124;exists:users,id</code>
+description | The server's description | <code>sometimes&#124;string</code>
+egg | The server's egg id | <code>required&#124;exists:eggs,id</code>
+pack | The server's pack id | <code>sometimes&#124;nullable&#124;numeric&#124;min:0</code>
+docker_image | The server's docker image | <code>sometimes&#124;string&#124;max:255</code>
+startup | The server's startup command | <code>required&#124;string</code>
+limits | The server's limits (array) | <code>required&#124;array</code>
+limits.memory | The server's memory limit | <code>required&#124;numeric&#124;min:0</code>
+limits.swap | The server's swap limit | <code>required&#124;numeric&#124;min:-1</code>
+limits.disk | The server's disk limit | <code>required&#124;numeric&#124;min:0</code>
+limits.io | The server's io limit | <code>required&#124;numeric&#124;between:10,1000</code>
+limits.cpu | The server's cpu limit | <code>required&#124;numeric&#124;min:0</code>
+feature_limits | The server's feature limits (array) | <code>required&#124;array</code>
+feature_limits.databases | The server's database limit | <code>present&#124;nullable&#124;integer&#124;min:0</code>
+feature_limits.allocations | The server's allocation limit | <code>present&#124;nullable&#124;integer&#124;min:0</code>
+environment | The server's environment variables (related to the egg) | <code>present&#124;array</code>
+allocation | The server's allocation ids (array) | <code>sometimes&#124;array</code>
+allocation.default | The server's default allocation id | <code>sometimes&#124;bail&#124;unique:servers&#124;exists:allocations,id</code>
+allocation.additional | The server's additional allocation ids (array) | <code>sometimes&#124;array</code>
+allocation.additional.* | The server's additional allocation id | <code>exists:allocations,id</code>
+deploy | The server's deploy information (array) | <code>sometimes&#124;required&#124;array</code>
+deploy.locations | The server's deploy locations (array) | <code>array</code>
+deploy.locations.* | The server's deploy location | <code>integer&#124;min:1</code>
+deploy.dedicated_ip | The server's dedicated ip | <code>required_with:deploy,boolean</code>
+deploy.port_range | The server's port ranges (array) | <code>array</code>
+deploy.port_range.* | The server's port range | <code>string</code>
+start_on_completion | Whether the server should start once created | <code>sometimes&#124;boolean</code>
+skip_scripts | Whether the server should skip egg scripts | <code>sometimes&#124;boolean</code>
+oom_disabled | Whether the server should have oom killer disabled | <code>sometimes&#124;boolean</code>
 
 
 
@@ -294,8 +444,10 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/details" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X PATCH \
   -d '{
+    "external_id": "cow_eater",
     "name": "Eat Cows",
-    "user": "1"
+    "user": "1",
+    "description": "ok...."
   }'
 ```
 > The above command returns JSON structured like this:
@@ -305,11 +457,11 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/details" \
   "object": "server",
   "attributes": {
     "id": 7,
-    "external_id": null,
+    "external_id": "cow_eater",
     "uuid": "78165af0-4835-405f-b281-07e961bfd0ad",
     "identifier": "78165af0",
     "name": "Eat Cows",
-    "description": "",
+    "description": "ok....",
     "suspended": false,
     "limits": {
       "memory": 1024,
@@ -330,7 +482,7 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/details" \
     "pack": null,
     "container": {
       "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-      "image": "quay.io\/pterodactyl\/core:java",
+      "image": "quay.io/pterodactyl/core:java",
       "installed": true,
       "environment": {
         "SERVER_JARFILE": "server.jar",
@@ -346,11 +498,18 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/details" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves the details for the specified server.
 
 ### HTTP Request
 
 `PATCH https://pterodactyl.app/api/application/servers/<internal-id>/details` 
+
+Parameter | Information | Rules
+- | - | -
+external_id | The server's external id | <code>sometimes&#124;nullable&#124;string&#124;between:1,191&#124;unique:servers</code>
+name | The server's name | <code>required&#124;string&#124;min:1&#124;max:255</code>
+user | The user id of the server owner | <code>required&#124;integer&#124;exists:users,id</code>
+description | The server's description | <code>sometimes&#124;nullable&#124;string</code>
 
 
 
@@ -372,12 +531,21 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/build" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X PATCH \
   -d '{
-    "allocation": "9",
-    "memory": "2048",
-    "swap": "-1",
-    "io": "500",
-    "cpu": "300",
-    "disk": "10000",
+    "allocation": 9,
+    "oom_disabled": true,
+    "limits": {
+      "memory": 2048,
+      "swap": -1,
+      "disk": 10000,
+      "io": 500,
+      "cpu": 300
+    },
+    "add_allocations": [
+      15
+    ],
+    "remove_allocations": [
+      3
+    ],
     "feature_limits": {
       "databases": 10,
       "allocations": 10
@@ -416,7 +584,7 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/build" \
     "pack": null,
     "container": {
       "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-      "image": "quay.io\/pterodactyl\/core:java",
+      "image": "quay.io/pterodactyl/core:java",
       "installed": true,
       "environment": {
         "SERVER_JARFILE": "server.jar",
@@ -432,12 +600,41 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/build" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves the build information for the specified server.
 
 ### HTTP Request
 
 `PATCH https://pterodactyl.app/api/application/servers/<internal-id>/build` 
 
+Parameter | Information | Rules
+- | - | -
+allocation | The server's default allocation id | <code>required&#124;bail&#124;unique:servers&#124;exists:allocations,id</code>
+oom_disabled | Whether the server should have oom killer disabled | <code>sometimes&#124;boolean</code>
+limits | The server's limits (array) | <code>sometimes&#124;array</code>
+limits.memory | The server's memory limit | <code>sometimes&#124;numeric&#124;min:0</code>
+limits.swap | The server's swap limit | <code>sometimes&#124;numeric&#124;min:-1</code>
+limits.disk | The server's disk limit | <code>sometimes&#124;numeric&#124;min:0</code>
+limits.io | The server's io limit | <code>sometimes&#124;numeric&#124;between:10,1000</code>
+limits.cpu | The server's cpu limit | <code>sometimes&#124;numeric&#124;min:0</code>
+add_allocations | The allocation ids to be added to the server (array) | <code>sometimes&#124;bail&#124;array</code>
+add_allocations.* | The allocation id to be added to the server | <code>integer</code>
+remove_allocations | The allocation ids to be removed from the server (array) | <code>sometimes&#124;bail&#124;array</code>
+remove_allocations.* | The allocation id to be removed from the server | <code>integer</code>
+feature_limits | The server's feature limits (array) | <code>required&#124;array</code>
+feature_limits.databases | The server's database limit | <code>present&#124;nullable&#124;integer&#124;min:0</code>
+feature_limits.allocations | The server's allocation limit | <code>sometimes&#124;nullable&#124;integer&#124;min:0</code>
+
+<aside class="warning">
+The following parameters are deprecated, don't start using them and remove them if are.
+</aside>
+
+Parameter | Information | Rules
+- | - | -
+memory | The server's memory limit | <code>required_without:limits&#124;numeric&#124;min:0</code>
+swap | The server's swap limit | <code>required_without:limits&#124;numeric&#124;min:-1</code>
+disk | The server's disk limit | <code>required_without:limits&#124;numeric&#124;min:0</code>
+io | The server's io limit | <code>required_without:limits&#124;numeric&#124;between:10,1000</code>
+cpu | The server's cpu limit | <code>required_without:limits&#124;numeric&#124;min:0</code>
 
 
 
@@ -463,7 +660,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/startup" \
       "SERVER_JARFILE",
       "DL_VERSION"
     ],
-    "egg": "1",
+    "egg": 1,
+    "pack": 4,
     "image": "quay.io/pterodactyl/core:java",
     "skip_scripts": false
   }
@@ -471,122 +669,65 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/startup" \
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "server",
+  "attributes": {
+    "id": 7,
+    "external_id": "1510",
+    "uuid": "78165af0-4835-405f-b281-07e961bfd0ad",
+    "identifier": "78165af0",
+    "name": "Eat Cows",
+    "description": "",
+    "suspended": false,
+    "limits": {
+      "memory": 2048,
+      "swap": -1,
+      "disk": 10000,
+      "io": 500,
+      "cpu": 300
+    },
+    "feature_limits": {
+      "databases": 10,
+      "allocations": 10
+    },
+    "user": 1,
+    "node": 2,
+    "allocation": 9,
+    "nest": 1,
+    "egg": 4,
+    "pack": null,
+    "container": {
+      "startup_command": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
+      "image": "quay.io/pterodactyl/core:java",
+      "installed": true,
+      "environment": {
+        "SERVER_JARFILE": "server.jar",
+        "VANILLA_VERSION": "latest",
+        "STARTUP": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
+        "P_SERVER_LOCATION": "test",
+        "P_SERVER_UUID": "78165af0-4835-405f-b281-07e961bfd0ad"
+      }
+    },
+    "updated_at": "2018-12-26T16:33:27+00:00",
+    "created_at": "2018-12-11T21:56:00+00:00"
+  }
+}
 ```
 
-This endpoint does this and that.
+This endpoint retrieves the startup information for the specified server.
 
 ### HTTP Request
 
 `PATCH https://pterodactyl.app/api/application/servers/<internal-id>/startup` 
 
-
-
-
-
-
-<!--
-######################################
-  ==> POST /api/application/servers
-######################################
--->
-## Create server
-
-
-```shell
-curl "https://pterodactyl.app/api/application/servers" \
-  -H "Authorization: Bearer meowmeowmeow" \
-  -H "Content-Type: application/json" \
-  -H "Accept: Application/vnd.pterodactyl.v1+json" \
-  -X POST \
-  -d '{
-  	"name": "Test",
-  	"user": 1,
-  	"nest": 5,
-  	"egg": 15,
-  	"docker_image": "quay.io/pterodactyl/core:java-glibc",
-  	"startup": "java -Xms128M -Xmx 1024M -jar server.jar",
-  	"limits": {
-  		"memory": 512,
-  		"swap": 0,
-  		"disk": 1024,
-  		"io": 500,
-  		"cpu": 100
-  	},
-  	"feature_limits": {
-  		"databases": 1,
-  		"allocations": 2
-  	},
-  	"environment": {
-  		"DL_VERSION": "1.12.2"
-  	},
-  	"deploy": {
-  		"locations": [1],
-  		"dedicated_ip": false,
-  		"port_range": []
-  	},
-  	"start_on_completion": true
-  }'
-```
-> The above command returns JSON structured like this:
-
-```json
-{
-  "object": "server",
-  "attributes": {
-    "id": 53,
-    "external_id": null,
-    "uuid": "d7bcc254-e218-4522-a7fe-9d2d562ad790",
-    "identifier": "d7bcc254",
-    "name": "Test",
-    "description": "",
-    "suspended": false,
-    "limits": {
-      "memory": 512,
-      "swap": 0,
-      "disk": 1024,
-      "io": 500,
-      "cpu": 100
-    },
-    "feature_limits": {
-      "databases": 1,
-      "allocations": 2
-    },
-    "user": 1,
-    "node": 1,
-    "allocation": 28,
-    "nest": 5,
-    "egg": 15,
-    "pack": null,
-    "container": {
-      "startup_command": "java -Xms128M -Xmx 1024M -jar server.jar",
-      "image": "quay.io\/pterodactyl\/core:java-glibc",
-      "installed": false,
-      "environment": {
-        "DL_VERSION": "1.12.2",
-        "STARTUP": "java -Xms128M -Xmx 1024M -jar server.jar",
-        "P_SERVER_LOCATION": "fr.sys",
-        "P_SERVER_UUID": "d7bcc254-e218-4522-a7fe-9d2d562ad790"
-      }
-    },
-    "updated_at": "2019-02-23T11:25:35+00:00",
-    "created_at": "2019-02-23T11:25:35+00:00"
-  }
-}
-```
-
-This endpoint will create a server based on the given json object. 
-
-<aside class="notice">
-Please note that every environment variable from the egg must be set.
-</aside>
-
-
-### HTTP Request
-
-`POST https://pterodactyl.app/api/application/servers` 
-
-
+Parameter | Information | Rules
+- | - | -
+startup | The server's startup command | <code>required&#124;string</code>
+environment | The server's environment variables (related to the egg) | <code>present&#124;array</code>
+egg | The server's egg id | <code>required&#124;exists:eggs,id</code>
+pack | The server's pack id | <code>sometimes&#124;nullable&#124;numeric&#124;min:0</code>
+image | The server's docker image | <code>required&#124;string&#124;max:255</code>
+skip_scripts | Whether the server should skip egg scripts | <code>present&#124;boolean</code>
 
 
 
@@ -606,13 +747,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/suspend" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint suspends the specified server.
 
 ### HTTP Request
 
@@ -638,13 +774,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/unsuspend" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint unsuspends the specified server.
 
 ### HTTP Request
 
@@ -670,13 +801,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/reinstall" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint reinstalls the specified server.
 
 ### HTTP Request
 
@@ -702,13 +828,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/rebuild" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint rebuilds the specified server.
 
 ### HTTP Request
 
@@ -734,13 +855,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified server.
 
 ### HTTP Request
 
@@ -766,13 +882,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/force" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE 
 ```
-> The above command returns JSON structured like this:
 
-```json
-
-```
-
-This endpoint does this and that.
+This endpoint forcefully deletes the specified server.
 
 ### HTTP Request
 
@@ -801,10 +912,40 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/databases" \
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "list",
+  "data": [
+    {
+      "object": "server_database",
+      "attributes": {
+        "id": 6,
+        "server": 1,
+        "host": 2,
+        "database": "s1_test",
+        "username": "u1_iff9TGoHFt",
+        "remote": "%",
+        "created_at": "2019-10-06T15:16:26+02:00",
+        "updated_at": "2019-10-06T15:28:26+02:00"
+      }
+    },
+    {
+      "object": "server_database",
+      "attributes": {
+        "id": 7,
+        "server": 1,
+        "host": 2,
+        "database": "s1_db2",
+        "username": "u1_tZ14uEvXan",
+        "remote": "%",
+        "created_at": "2019-10-06T15:28:57+02:00",
+        "updated_at": "2019-10-06T15:28:57+02:00"
+      }
+    }
+  ]
+}
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all the databases for the specified server, along with information about them.
 
 ### HTTP Request
 
@@ -833,10 +974,22 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/databases/<d
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "server_database",
+  "attributes": {
+    "id": 6,
+    "server": 1,
+    "host": 2,
+    "database": "s1_test",
+    "username": "u1_iff9TGoHFt",
+    "remote": "%",
+    "created_at": "2019-10-06T15:16:26+02:00",
+    "updated_at": "2019-10-06T15:28:26+02:00"
+  }
+}
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information about the specified database for the specified server.
 
 ### HTTP Request
 
@@ -860,19 +1013,45 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/databases" \
   -H "Authorization: Bearer meowmeowmeow" \
   -H "Content-Type: application/json" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
-  -X POST 
+  -X POST \
+  -d '{
+    "database": "mydb",
+    "remote": "%",
+    "host": 2
+  }
 ```
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "server_database",
+  "attributes": {
+    "id": 8,
+    "server": 1,
+    "host": 2,
+    "database": "s1_mydb",
+    "username": "u1_9qUoCWnpfS",
+    "remote": "%",
+    "created_at": "2019-10-06T15:53:31+02:00",
+    "updated_at": "2019-10-06T15:53:31+02:00"
+  },
+  "meta": {
+    "resource": "https://pterodactyl.app/api/application/servers/1/databases/8"
+  }
+}
 ```
 
-This endpoint does this and that.
+This endpoint creates a new database on the specified server with the provided information.
 
 ### HTTP Request
 
 `POST https://pterodactyl.app/api/application/servers/<internal-id>/databases` 
+
+Parameter | Information | Rules
+- | - | -
+database | The database's name | <code>required&#124;string&#124;min:1&#124;max:24</code> + unique in `databases` where `database_host_id` = `host`
+remote | The database's remote connection rule | <code>required&#124;string&#124;regex:/^[0-9%.]{1,15}$/</code>
+host | The database's host server id | <code>required&#124;integer&#124;exists:database_hosts,id</code>
 
 
 
@@ -894,13 +1073,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/databases/<d
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST 
 ```
-> The above command returns JSON structured like this:
 
-```json
-{}
-```
-
-This endpoint does this and that.
+This endpoint edits the specified database on the specified server with the provided information.
 
 ### HTTP Request
 
@@ -926,13 +1100,8 @@ curl "https://pterodactyl.app/api/application/servers/<internal-id>/databases/<d
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE 
 ```
-> The above command returns JSON structured like this:
 
-```json
-{}
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified database on the specified server.
 
 ### HTTP Request
 
