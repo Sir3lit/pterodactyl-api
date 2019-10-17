@@ -31,12 +31,22 @@ curl "https://pterodactyl.app/api/application/locations" \
         "updated_at": "2018-04-06T02:12:21+00:00",
         "created_at": "2018-04-06T02:12:21+00:00"
       }
+    },
+    {
+      "object": "location",
+      "attributes": {
+        "id": 2,
+        "short": "yes",
+        "long": "yes test",
+        "updated_at": "2018-04-06T02:12:23+00:00",
+        "created_at": "2018-04-06T02:12:23+00:00"
+      }
     }
   ],
   "meta": {
     "pagination": {
-      "total": 1,
-      "count": 1,
+      "total": 2,
+      "count": 2,
       "per_page": 50,
       "current_page": 1,
       "total_pages": 1,
@@ -46,7 +56,7 @@ curl "https://pterodactyl.app/api/application/locations" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all locations on the panel along with information about them.
 
 ### HTTP Request
 
@@ -87,7 +97,7 @@ curl "https://pterodactyl.app/api/application/locations/<location-id>" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified location.
 
 ### HTTP Request
 
@@ -113,22 +123,38 @@ curl "https://pterodactyl.app/api/application/locations" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X POST \
   -d '{
-    "shortcode": "US",
-    "description": "Datacenter"
+    "short": "us.datacenter",
+    "long": "US Datacenter"
   }'
 ```
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "location",
+    "attributes": {
+      "id": 3,
+      "short": "us.datacenter",
+      "long": "US Datacenter",
+      "updated_at": "2019-10-06T16:55:48+00:00",
+      "created_at": "2019-10-06T16:55:48+00:00"
+    },
+    "meta": {
+      "resource": "https://pterodactyl.app/api/application/locations/3"
+    }
+}
 ```
 
-This endpoint does this and that.
+This endpoint creates a location using the specified information.
 
 ### HTTP Request
 
 `POST https://pterodactyl.app/api/application/locations` 
 
+Parameter | Information | Rules
+- | - | -
+short | The location's short name | <code>required&#124;string&#124;between:1,60&#124;unique:locations,short</code>
+long | The location's long name | <code>required&#124;string&#124;between:1,255</code>
 
 
 
@@ -149,21 +175,35 @@ curl "https://pterodactyl.app/api/application/locations/<location-id>" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X PATCH \
   -d '{
-    "shortcode": "US",
-    "description": "Datacenter"
+    "short": "us.ny.datacenter",
+    "long": "US NY Datacenter"
   }'
 ```
 > The above command returns JSON structured like this:
 
 ```json
-{}
+{
+  "object": "location",
+    "attributes": {
+      "id": 3,
+      "short": "us.ny.datacenter",
+      "long": "US NY Datacenter",
+      "updated_at": "2019-10-06T16:57:25+00:00",
+      "created_at": "2019-10-06T16:55:48+00:00"
+    }
+}
 ```
 
-This endpoint does this and that.
+This endpoint edits the specified location using the provided information.
 
 ### HTTP Request
 
 `PATCH https://pterodactyl.app/api/application/locations/<location-id>` 
+
+Parameter | Information | Rules
+- | - | -
+short | The location's short name | <code>required&#124;string&#124;between:1,60&#124;unique:locations,short</code>
+long | The location's long name | <code>required&#124;string&#124;between:1,255</code>
 
 
 
@@ -185,12 +225,8 @@ curl "https://pterodactyl.app/api/application/locations/<location-id>" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE 
 ```
-> The above command returns JSON structured like this:
 
-```json
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified location.
 
 ### HTTP Request
 

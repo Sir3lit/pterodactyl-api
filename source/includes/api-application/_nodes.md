@@ -41,7 +41,7 @@ curl "https://pterodactyl.app/api/application/nodes" \
         "upload_size": 100,
         "daemon_listen": 2096,
         "daemon_sftp": 2022,
-        "daemon_base": "\/tmp\/daemon-data",
+        "daemon_base": "/tmp/daemon-data",
         "created_at": "2018-04-06T02:19:33+00:00",
         "updated_at": "2018-10-28T01:13:03+00:00"
       }
@@ -60,7 +60,7 @@ curl "https://pterodactyl.app/api/application/nodes" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all nodes on the panel along with information about them.
 
 ### HTTP Request
 
@@ -108,14 +108,14 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>" \
     "upload_size": 100,
     "daemon_listen": 2096,
     "daemon_sftp": 2022,
-    "daemon_base": "\/tmp\/daemon-data",
+    "daemon_base": "/tmp/daemon-data",
     "created_at": "2018-04-06T02:19:33+00:00",
     "updated_at": "2018-10-28T01:13:03+00:00"
   }
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves information for the specified node.
 
 ### HTTP Request
 
@@ -142,23 +142,22 @@ curl "https://pterodactyl.app/api/application/nodes" \
   -X POST \
   -d '
   {
-    "name":"Test API Creation",
-    "location_id":"1",
-    "public":"1",
-    "fqdn":"google.com",
-    "scheme":"https",
-    "behind_proxy":"0",
-    "daemonBase":"/srv/daemon-data",
-    "memory":1024,
-    "memory_overallocate":0,
-    "disk":1024,
-    "disk_overallocate":0,
-    "daemon_base":"/srv/daemon-data",
-    "daemon_listen":"8080",
-    "daemon_sftp":"2022",
-    "throttle":{
-      "enabled":false
-    }
+    "name": "Test Node",
+    "description": "",
+    "location_id": 1,
+    "public": true,
+    "fqdn": "node-01.pterodactyl.app",
+    "scheme": "https",
+    "behind_proxy": false,
+    "memory": 1024,
+    "memory_overallocate": 0,
+    "disk": 1024,
+    "disk_overallocate": 0,
+    "daemon_base": "/srv/daemon-data",
+    "daemon_listen": "8080",
+    "daemon_sftp": "2022",
+    "maintenance_mode": false,
+    "upload_size": 100,
   }'
 ```
 > The above command returns JSON structured like this:
@@ -172,7 +171,7 @@ curl "https://pterodactyl.app/api/application/nodes" \
     "name": "Test Node",
     "description": "",
     "location_id": 1,
-    "fqdn": "node-01.pterodactyl.local",
+    "fqdn": "node-01.pterodactyl.app",
     "scheme": "https",
     "behind_proxy": false,
     "maintenance_mode": false,
@@ -183,22 +182,40 @@ curl "https://pterodactyl.app/api/application/nodes" \
     "upload_size": 100,
     "daemon_listen": 8080,
     "daemon_sftp": 2022,
-    "daemon_base": "\/srv\/daemon-data",
+    "daemon_base": "/srv/daemon-data",
     "created_at": "2018-11-20T03:45:26+00:00",
     "updated_at": "2018-11-20T03:45:26+00:00"
   },
   "meta": {
-    "resource": "https:\/\/pterodactyl.development.deluxenode.com\/api\/application\/nodes\/4"
+    "resource": "https://pterodactyl.app/api/application/nodes/4"
   }
 }
 ```
 
-This endpoint does this and that.
+This endpoint creates a new node with the provided information.
 
 ### HTTP Request
 
 `POST https://pterodactyl.app/api/application/nodes` 
 
+Parameter | Information | Rules
+- | - | -
+name | The node's name | <code>required&#124;regex:/^([\w .-]{1,100})$/</code>
+description | The node's description | <code>sometimes&#124;string</code>
+location_id | The node's location id | <code>required&#124;exists:locations,id</code>
+public | Whether auto-deployment is enabled for this node | <code>sometimes&#124;boolean</code>
+fqdn | The node's fully qualified domain name| <code>required&#124;string</code>
+scheme | The node's connection scheme | <code>required&#124;in:http,https</code>
+behind_proxy | Whether the node is behind a proxy| <code>sometimes&#124;boolean</code>
+memory | The node's memory *in mb* | <code>required&#124;numeric&#124;min:1</code>
+memory_overallocate | The node's memory over-allocation *in %* | <code>required&#124;numeric&#124;min:-1</code>
+disk | The node's disk space *in mb* | <code>required&#124;numeric&#124;min:1</code>
+disk_overallocate | The node's disk space over-allocation *in %* | <code>required&#124;numeric&#124;min:-1</code>
+daemon_base | The node's base daemon path | <code>sometimes&#124;regex:/^([\/][\d\w.\-\/]+)$/</code>
+daemon_sftp | The node's daemon sftp port | <code>required&#124;numeric&#124;between:1,65535</code>
+daemon_listen | The node's daemon port | <code>required&#124;numeric&#124;between:1,65535</code>
+maintenance_mode | Whether the node is in maintenance mode | <code>sometimes&#124;boolean</code>
+upload_size | The node's upload size limit | <code>sometimes&#124;int&#124;between:1,1024</code>
 
 
 
@@ -220,23 +237,22 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>" \
   -X PATCH \
   -d '
   {
-    "name": "Test Node 2",
-    "location_id": "1",
-    "public": "1",
-    "fqdn": "pdev1.pterodactyl.development.deluxenode.com",
+    "name": "Test Node",
+    "description": "Test",
+    "location_id": 5,
+    "public": true,
+    "fqdn": "pdev1.pterodactyl.app",
     "scheme": "https",
-    "behind_proxy": "0",
-    "daemonBase": "/srv/daemon-data",
-    "memory": 1024,
+    "behind_proxy": false,
+    "memory": 2048,
     "memory_overallocate": 0,
     "disk": 1024,
-    "disk_overallocate": 0,
+    "disk_overallocate": -1,
     "daemon_base": "/srv/daemon-data",
     "daemon_listen": "8080",
     "daemon_sftp": "2022",
-    "throttle": {
-      "enabled": false
-    }
+    "maintenance_mode": false,
+    "upload_size": 100,
   }'
 ```
 > The above command returns JSON structured like this:
@@ -249,30 +265,49 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>" \
     "public": true,
     "name": "Test Node 2",
     "description": "Test",
-    "location_id": 1,
-    "fqdn": "pdev1.pterodactyl.development.deluxenode.com",
+    "location_id": 5,
+    "fqdn": "pdev1.pterodactyl.app",
     "scheme": "https",
     "behind_proxy": false,
     "maintenance_mode": false,
-    "memory": 1024,
+    "memory": 2048,
     "memory_overallocate": 0,
     "disk": 1024,
-    "disk_overallocate": 0,
+    "disk_overallocate": -1,
     "upload_size": 100,
     "daemon_listen": 8080,
     "daemon_sftp": 2022,
-    "daemon_base": "\/srv\/daemon-data",
+    "daemon_base": "/srv/daemon-data",
     "created_at": "2018-04-06T02:19:33+00:00",
     "updated_at": "2018-12-17T19:37:26+00:00"
   }
 }
 ```
 
-This endpoint does this and that.
+This endpoint edits the specified node with the provided information.
 
 ### HTTP Request
 
 `PATCH https://pterodactyl.app/api/application/nodes/<node-id>` 
+
+Parameter | Information | Rules
+- | - | -
+name | The node's name | <code>required&#124;regex:/^([\w .-]{1,100})$/</code>
+description | The node's description | <code>sometimes&#124;string</code>
+location_id | The node's location id | <code>required&#124;exists:locations,id</code>
+public | Whether auto-deployment is enabled for this node | <code>sometimes&#124;boolean</code>
+fqdn | The node's fully qualified domain name| <code>required&#124;string</code>
+scheme | The node's connection scheme | <code>required&#124;in:http,https</code>
+behind_proxy | Whether the node is behind a proxy| <code>sometimes&#124;boolean</code>
+memory | The node's memory *in mb* | <code>required&#124;numeric&#124;min:1</code>
+memory_overallocate | The node's memory over-allocation *in %* | <code>required&#124;numeric&#124;min:-1</code>
+disk | The node's disk space *in mb* | <code>required&#124;numeric&#124;min:1</code>
+disk_overallocate | The node's disk space over-allocation *in %* | <code>required&#124;numeric&#124;min:-1</code>
+daemon_base | The node's base daemon path | <code>sometimes&#124;regex:/^([\/][\d\w.\-\/]+)$/</code>
+daemon_sftp | The node's daemon sftp port | <code>required&#124;numeric&#124;between:1,65535</code>
+daemon_listen | The node's daemon port | <code>required&#124;numeric&#124;between:1,65535</code>
+maintenance_mode | Whether the node is in maintenance mode | <code>sometimes&#124;boolean</code>
+upload_size | The node's upload size limit | <code>sometimes&#124;int&#124;between:1,1024</code>
 
 
 
@@ -294,12 +329,8 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>" \
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE
 ```
-> The above command returns JSON structured like this:
 
-```json
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified node.
 
 ### HTTP Request
 
@@ -365,7 +396,7 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>/allocations" \
 }
 ```
 
-This endpoint does this and that.
+This endpoint retrieves all allocations for the specified node, along with information about them.
 
 ### HTTP Request
 
@@ -399,30 +430,19 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>/allocations" \
     ]
   }'
 ```
-> The above command returns JSON structured like this:
 
-```json
-{
-  "errors": [
-    {
-      "code": "FatalThrowableError",
-      "status": "500",
-      "detail": "Return value of Pterodactyl\\Http\\Controllers\\Api\\Application\\Nodes\\AllocationController::store() must be of the type array, object returned",
-      "source": {
-        "line": 85,
-        "file": "/app/Http/Controllers/Api/Application/Nodes/AllocationController.php"
-      } 
-    }
-  ]
-}
-```
-
-This endpoint does this and that.
+This endpoint creates a new allocation using the provided  information.
 
 ### HTTP Request
 
 `POST https://pterodactyl.app/api/application/nodes/<node-id>/allocations` 
 
+Parameter | Information | Rules
+- | - | -
+ip | The allocation's ip | <code>required&#124;string</code>
+alias | The allocation's alias name | <code>sometimes&#124;nullable&#124;string&#124;max:255</code>
+ports | The allocation ports (array) | <code>required&#124;array</code>
+ports.* | The allocation port | <code>string</code>
 
 
 
@@ -443,12 +463,8 @@ curl "https://pterodactyl.app/api/application/nodes/<node-id>/allocations/<alloc
   -H "Accept: Application/vnd.pterodactyl.v1+json" \
   -X DELETE
 ```
-> The above command returns JSON structured like this:
 
-```json
-```
-
-This endpoint does this and that.
+This endpoint deletes the specified allocation for the specified node.
 
 ### HTTP Request
 
